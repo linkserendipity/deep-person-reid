@@ -4,10 +4,11 @@ import os.path as osp
 import numpy as np
 import sys 
 sys.path.append("..") 
+import glob
 
 from utils import mkdir_if_missing,  write_json, read_json
 
-# from Ipython import embed
+from Ipython import embed
 
 class Market1501(object):
     """
@@ -31,7 +32,7 @@ class Market1501(object):
         self._check_before_run()
 
         # path, ID,CAM ID, number of pictures
-        
+        self._process_dir(self.train_dir)
         
         
     def _check_before_run(self):
@@ -45,6 +46,8 @@ class Market1501(object):
             raise RuntimeError("'{}' is not available".format(self.gallery_dir))
             
     def _process_dir(self, dir_path, relabel = False):
+        img_paths = glob.glob(osp.join(dir_path, '*.jpg'))
+        embed()
 
 if __name__ == '__main__':
     data = Market1501(root = '/home/ls')
