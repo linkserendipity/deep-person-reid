@@ -49,12 +49,28 @@ class Market1501(object):
             
     def _process_dir(self, dir_path, relabel = False):
         img_paths = glob.glob(osp.join(dir_path, '*.jpg'))
-        pattern = re.compile(r'([-\d]+)_c(\d))')
+        pattern = re.compile(r'([-\d]+)_c(\d)')
+        
         pid_container = set()
         for img_path in img_paths:
-            pid, _ = map(int, pattern.search(img_path).group())
+            pid, _ = map(int, pattern.search(img_path).groups())
             if pid == -1: continue
             pid_container.add(pid)
+        pid2label = {pid:label for label, pid in enumerate(pid_container)}
+        
+        dataset = []
+        for img_path in img+paths:
+            pid, camid = map(int, pattern.search(img_path).groups())
+            if pid == -1: continue
+            assert 0<= pid <= 1501
+            assert 1<= camid <=6
+            camid -= -1
+            if relabel:
+                pid = pid2label[pid]
+            dataset.append(img_path, pid, camid)
+        num_pids =len(pid_container)
+        num
+            
         embed()
         
 if __name__ == '__main__':
