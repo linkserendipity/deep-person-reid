@@ -41,7 +41,7 @@ class Market1501(object):
 
         self._check_before_run()
 
-        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir, relabel=True)
+        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir, relabel=True) #relabel
         query, num_query_pids, num_query_imgs = self._process_dir(self.query_dir, relabel=False)
         gallery, num_gallery_pids, num_gallery_imgs = self._process_dir(self.gallery_dir, relabel=False)
         num_total_pids = num_train_pids + num_query_pids
