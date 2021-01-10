@@ -42,7 +42,7 @@ class ImageDataset(Dataset):
 
 if __name__ == '__main__':
     import data_manager
-    dataset = data_manager.init_img_dataset(root='/home/ls', name='Market')
+    dataset = data_manager.init_img_dataset(root='/home/ls', name='market1501')
     train_loader = ImageDataset(dataset.train)
     from IPython import embed
     embed()

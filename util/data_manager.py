@@ -29,7 +29,7 @@ class Market1501(object):
     # identities: 1501 (+1 for background)
     # images: 12936 (train) + 3368 (query) + 15913 (gallery)
     """
-    dataset_dir = 'market1501'
+    dataset_dir = 'Market'
 
     def __init__(self, root='data', **kwargs):
         self.dataset_dir = osp.join(root, self.dataset_dir)
