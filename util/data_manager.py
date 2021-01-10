@@ -9,6 +9,8 @@ import glob
 from utils import mkdir_if_missing,  write_json, read_json
 
 from IPython import embed
+import re
+
 
 class Market1501(object):
     """
@@ -47,8 +49,14 @@ class Market1501(object):
             
     def _process_dir(self, dir_path, relabel = False):
         img_paths = glob.glob(osp.join(dir_path, '*.jpg'))
+        pattern = re.compile(r'([-\d]+)_c(\d))')
+        pid_container = set()
+        for img_path in img_paths:
+            pid, _ = map(int, pattern.search(img_path).group())
+            if pid == -1: continue
+            pid_container.add(pid)
         embed()
-
+        
 if __name__ == '__main__':
     data = Market1501(root = '/home/ls')
 
