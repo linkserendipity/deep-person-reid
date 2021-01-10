@@ -34,9 +34,33 @@ class Market1501(object):
         self._check_before_run()
 
         # data_dir, ID,CAM ID, number of pictures
-        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir, relabel = True)
+        # train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir, relabel = True)
+        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir, relabel=True)
+        query, num_query_pids, num_query_imgs = self._process_dir(self.query_dir, relabel=False)
+        gallery, num_gallery_pids, num_gallery_imgs = self._process_dir(self.gallery_dir, relabel=False)
+        num_total_pids = num_train_pids + num_query_pids
+        num_total_imgs = num_train_imgs + num_query_imgs + num_gallery_imgs
 
-        embed()
+        print("=> Market1501 loaded")
+        print("Dataset statistics:")
+        print("  ------------------------------")
+        print("  subset   | # ids | # images")
+        print("  ------------------------------")
+        print("  train    | {:5d} | {:8d}".format(num_train_pids, num_train_imgs))
+        print("  query    | {:5d} | {:8d}".format(num_query_pids, num_query_imgs))
+        print("  gallery  | {:5d} | {:8d}".format(num_gallery_pids, num_gallery_imgs))
+        print("  ------------------------------")
+        print("  total    | {:5d} | {:8d}".format(num_total_pids, num_total_imgs))
+        print("  ------------------------------")
+
+        self.train = train
+        self.query = query
+        self.gallery = gallery
+
+        self.num_train_pids = num_train_pids
+        self.num_query_pids = num_query_pids
+        self.num_gallery_pids = num_gallery_pids
+        # embed()
         
         
     def _check_before_run(self):
