@@ -2,10 +2,12 @@ from __future__ import print_function, absolute_import
 import os
 import os.path as osp
 import numpy as np
+import sys 
+sys.path.append("..") 
 
-from utils import mkdir_if_missing(),  write_json, read_json
+from utils import mkdir_if_missing,  write_json, read_json
 
-from Ipython import embed
+# from Ipython import embed
 
 class Market1501(object):
     """
@@ -18,7 +20,7 @@ class Market1501(object):
     # identities: 1501 (+1 for background)
     # images: 12936 (train) + 3368 (query) + 15913 (gallery)
     """
-    dataset_dir = 'market1501'
+    dataset_dir = 'Market'
 
     def __init__(self, root = 'data', **kwargs):
         self.dataset_dir = osp.join(root, self.dataset_dir)
@@ -28,6 +30,10 @@ class Market1501(object):
 
         self._check_before_run()
 
+        # path, ID,CAM ID, number of pictures
+        
+        
+        
     def _check_before_run(self):
         if not osp.exists(self.dataset_dir):
             raise RuntimeError("'{}' is not available".format(self.dataset_dir))
@@ -38,8 +44,8 @@ class Market1501(object):
         if not osp.exists(self.gallery_dir):
             raise RuntimeError("'{}' is not available".format(self.gallery_dir))
 
-if __name__ = '__main__':
-    data = Market1501(root = '/home/ls/data')
+if __name__ == '__main__':
+    data = Market1501(root = '/home/ls')
 
 
 
