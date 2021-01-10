@@ -8,7 +8,7 @@ import glob
 
 from utils import mkdir_if_missing,  write_json, read_json
 
-from Ipython import embed
+from IPython import embed
 
 class Market1501(object):
     """
@@ -31,7 +31,7 @@ class Market1501(object):
 
         self._check_before_run()
 
-        # path, ID,CAM ID, number of pictures
+        # data_dir, ID,CAM ID, number of pictures
         self._process_dir(self.train_dir)
         
         
