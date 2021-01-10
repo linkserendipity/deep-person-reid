@@ -98,7 +98,7 @@ class Market1501(object):
         num_imgs = len(img_paths)
         return dataset, num_pids, num_imgs
             
-        embed()
+        # embed()
         
 if __name__ == '__main__':
     data = Market1501(root = '/home/ls')
