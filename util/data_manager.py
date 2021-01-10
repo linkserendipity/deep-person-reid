@@ -34,7 +34,9 @@ class Market1501(object):
         self._check_before_run()
 
         # data_dir, ID,CAM ID, number of pictures
-        self._process_dir(self.train_dir)
+        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir)
+
+        embed()
         
         
     def _check_before_run(self):
@@ -69,7 +71,8 @@ class Market1501(object):
                 pid = pid2label[pid]
             dataset.append(img_path, pid, camid)
         num_pids =len(pid_container)
-        num
+        num_imgs = len(img_paths)
+        return dataset, num_pids, num_imgs
             
         embed()
         
