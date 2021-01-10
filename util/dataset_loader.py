@@ -47,3 +47,7 @@ if __name__ == '__main__':
     from IPython import embed
     embed()
 
+# for batch_id, (imgs, pid, camid) in enumerate(train_loader):
+#    ...:     print(batch_id, imgs, pid, camid)
+#    ...:     if batch_id > 10:
+#    ...:         break
