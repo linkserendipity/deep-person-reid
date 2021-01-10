@@ -34,7 +34,7 @@ class Market1501(object):
         self._check_before_run()
 
         # data_dir, ID,CAM ID, number of pictures
-        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir)
+        train, num_train_pids, num_train_imgs = self._process_dir(self.train_dir, relabel = True)
 
         embed()
         
@@ -61,7 +61,7 @@ class Market1501(object):
         pid2label = {pid:label for label, pid in enumerate(pid_container)}
         
         dataset = []
-        for img_path in img+paths:
+        for img_path in img_paths:
             pid, camid = map(int, pattern.search(img_path).groups())
             if pid == -1: continue
             assert 0<= pid <= 1501
@@ -69,7 +69,7 @@ class Market1501(object):
             camid -= -1
             if relabel:
                 pid = pid2label[pid]
-            dataset.append(img_path, pid, camid)
+            dataset.append((img_path, pid, camid))
         num_pids =len(pid_container)
         num_imgs = len(img_paths)
         return dataset, num_pids, num_imgs
