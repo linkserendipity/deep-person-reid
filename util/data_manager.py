@@ -43,6 +43,8 @@ class Market1501(object):
             raise RuntimeError("'{}' is not available".format(self.query_dir))
         if not osp.exists(self.gallery_dir):
             raise RuntimeError("'{}' is not available".format(self.gallery_dir))
+            
+    def _process_dir(self, dir_path, relabel = False):
 
 if __name__ == '__main__':
     data = Market1501(root = '/home/ls')
