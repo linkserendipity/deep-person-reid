@@ -47,17 +47,19 @@ if __name__ == '__main__':
         [
             Random2DTranslation(256,128,0.5),
             transforms.RandomHorizontalFlip(),
-            # transforms.ToTensor(),
+            transforms.ToTensor(),
     
         ]
     )
     img_t = transform(img)
-    import matplotlib.pyplot as plt
+    print(img_t.shape)
 
-    plt.figure(12)
-    plt.subplot(121)
-    plt.imshow(img)
-    plt.subplot(121)
-    plt.imshow(img_t)
-    plt.show()
+    # import matplotlib.pyplot as plt
+
+    # plt.figure(12)
+    # plt.subplot(121)
+    # plt.imshow(img)
+    # plt.subplot(122)
+    # plt.imshow(img_t)
+    # plt.show()
     # pass
