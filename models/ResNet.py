@@ -4,6 +4,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 import torchvision
+from IPython import embed
 
 __all__ = ['ResNet50', 'ResNet101', 'ResNet50M']
 
