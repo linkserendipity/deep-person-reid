@@ -42,7 +42,7 @@ class Random2DTranslation(object):
 
 if __name__ == '__main__':
     import torchvision.transforms as transforms
-    img = Image.open('/home/ls/data/market/bounding_box_train/0002_c1s1_000451_03.jpg')
+    img = Image.open('/home/ls/Market/bounding_box_train/0002_c1s1_000451_03.jpg')
     transform = transforms.Compose(
         [
             Random2DTranslation(256,128,0.5),
