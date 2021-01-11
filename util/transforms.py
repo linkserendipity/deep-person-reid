@@ -7,6 +7,7 @@ import numpy as np
 
 class Random2DTranslation(object):
     """
+    resize +crop
     With a probability, first increase image size to (1 + 1/8), and then perform random crop.
 
     Args:
@@ -40,4 +41,23 @@ class Random2DTranslation(object):
         return croped_img
 
 if __name__ == '__main__':
-    pass
+    import torchvision.transforms as transforms
+    img = Image.open('/home/ls/data/market/bounding_box_train/0002_c1s1_000451_03.jpg')
+    transform = transforms.Compose(
+        [
+            Random2DTranslation(256,128,0.5),
+            transforms.RandomHorizontalFlip(),
+            # transforms.ToTensor(),
+    
+        ]
+    )
+    img_t = transform(img)
+    import matplotlib.pyplot as plt
+
+    plt.figure(12)
+    plt.subplot(121)
+    plt.imshow(img)
+    plt.subplot(121)
+    plt.imshow(img_t)
+    plt.show()
+    # pass
