@@ -5,8 +5,6 @@ import errno
 import shutil
 import json
 import os.path as osp
-sys.path.append(".")
-sys.path.append("..")
 import torch
 
 def mkdir_if_missing(directory):
