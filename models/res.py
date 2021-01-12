@@ -22,9 +22,9 @@ class ResNet50(nn.Module):
         # f = 1.*f / (torch.norm(f, 2, dim=-1, keepdim=True).expand_as(f) + 1e-12)
 
         if not self.training:
-            return f
+            return f   #  torch.Size([32, 2048])
         y = self.classifier(f) #self.!!!!!!!!!!!!!
-        return y
+        return y # if training return torch.Size([32, 751]) 
         
 
 if __name__ == "__main__":
