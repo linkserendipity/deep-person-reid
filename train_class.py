@@ -141,7 +141,7 @@ def test(model, queryloader, galleryloader, use_gpu, ranks=[1, 5, 10, 20]):
 
 def main():
     torch.manual_seed(args.seed)
-    ugse_gpu = torch.cuda.is_available()
+    use_gpu = torch.cuda.is_available()
     if args.use_cpu: 
         use_gpu = False
     if use_gpu:
