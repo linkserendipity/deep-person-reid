@@ -1091,7 +1091,8 @@ __vid_factory = {
 }
 
 def get_names():
-    return __img_factory.keys() + __vid_factory.keys()
+    return str(__img_factory.keys()) + str(__vid_factory.keys())
+    # "+" can only connect str 
 
 def init_img_dataset(name, **kwargs):
     if name not in __img_factory.keys():
