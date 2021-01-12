@@ -11,7 +11,16 @@ class ResNet50(nn.Module):
             super(ResNet50, self).__init__()
             resnet50 = torchvision.models.resnet50(pretrained=True)
             # resnet50 = torchvision.models.resnet50(pretraind=True)
-            embed()
+            self.base = nn.Sequential(*list(resnet50.children())[:-2]) #
+            self.classifier = nn.Linear(2048, num_classes)
+            
+    def forward(self, x):
+        x =self.base(x)      
+        embed()
+
+
 
 if __name__ == "__main__":
     model = ResNet50(num_classes = 751)    
+    imgs = torch.Tensor(32, 3, 256, 128)
+    f = model(imgs)
