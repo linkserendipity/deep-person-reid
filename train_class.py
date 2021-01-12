@@ -233,7 +233,7 @@ def main():
         test(model, queryloader, galleryloader, use_gpu)
         return 0
 
-    print('start training!')
+    print('==>start training')
 
     for epoch in range(start_epoch, args.max_epoch):
         train(epoch, model, criterion_class, optimizer, trainloader, use_gpu)
@@ -264,7 +264,7 @@ def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
         end = time.time()
         losses.update(loss.item(), pids.size(0))
 
-        if (batch_idx+1) % args.print_freq == 0:
+        if (batch_idx+1) % args.print-freq == 0:
             print('Epoch: [{0}][{1}/{2}]\t'
                   'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                   'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
