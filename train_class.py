@@ -203,7 +203,7 @@ def main():
 
     # model =models.init_model(name=args.arch, num_classes = dataset.num_train_pids, loss = 'softmax')
     print("Initializing model: {}".format(args.arch))
-    model = models.init_model(name=args.arch, num_classes=dataset.num_train_pids, loss={'softmax'})
+    model = models.init_model(name=args.arch, num_classes=dataset.num_train_pids, loss={'xent'})
     print("Model size: {:.5f}M".format(sum(p.numel() for p in model.parameters())/1000000.0))
 
     criterion_class = CrossEntropyLabelSmooth(num_classes=751)
