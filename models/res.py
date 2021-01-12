@@ -13,4 +13,4 @@ class ResNet50(nn.Module):
             embed()
 
 if __name__ == "__main__":
-    model = Resnet50(num_classes = 751)    
+    model = ResNet50(num_classes = 751)    
