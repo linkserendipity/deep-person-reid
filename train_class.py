@@ -1,7 +1,7 @@
 from __future__ import print_function, absolute_import
 import os
 import sys
-sys.path.append("..")
+# sys.path.append("..")
 import time
 import datetime
 import argparse
@@ -214,4 +214,3 @@ def train():
 
 if __name__ == "__main__":
     main()
-
