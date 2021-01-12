@@ -3,8 +3,9 @@ import os
 import glob
 import re
 import sys
-sys.path.append(".")
-sys.path.append("..")
+sys.path.append("/home/ls/deep-person-reid/util")
+
+# sys.path.append("..")
 import urllib
 import tarfile
 import zipfile

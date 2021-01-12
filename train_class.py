@@ -1,7 +1,7 @@
 from __future__ import print_function, absolute_import
 import os
 import sys
-# sys.path.append("..")
+sys.path.append("/home/ls/deep-person-reid/util")
 import time
 import datetime
 import argparse
