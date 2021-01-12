@@ -24,7 +24,7 @@ def read_image(img_path):
 # img = Image.open(img_path).convert('RGB')
 
 class ImageDataset(Dataset):
-    def __init__(self, dataset, transform = None):
+    def __init__(self, dataset, transform=None):
         self.dataset = dataset
         self.transform = transform
     
