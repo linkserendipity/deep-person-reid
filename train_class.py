@@ -241,17 +241,26 @@ def main():
 
 def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
     model.train()
+    losses = AverageMeter()
+    batch_time = AverageMeter()
+    data_time = AverageMeter()
 
+    end = time.time()
     for batch_idx, (imgs, pids, _) in enumerate(trainloader):
         if use_gpu:
             imgs, pids = imgs.cuda(), pids.cuda()
+        # measure data loading time
+        data_time.update(time.time() - end)
+
         outputs = model(imgs)
         loss = criterion_class(outputs, pids)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        #print(epoch, batch_idx, loss)
         print(batch_idx, loss)
-        break
+        if batch_idx > 100:
+            break
     return 0
 
 if __name__ == "__main__":
