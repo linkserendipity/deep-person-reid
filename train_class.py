@@ -26,7 +26,7 @@ from IPython import embed
 
 parser = argparse.ArgumentParser(description='Train image model with cross entropy loss')
 # Datasets
-parser.add_argument('--root', type=str, default='/home/ls/Market', help="root path to data directory")
+parser.add_argument('--root', type=str, default='/home/ls', help="root path to data directory")
 parser.add_argument('-d', '--dataset', type=str, default='market1501',
                     choices=data_manager.get_names())
 parser.add_argument('-j', '--workers', default=4, type=int,
