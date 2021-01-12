@@ -28,7 +28,7 @@ class ResNet50(nn.Module):
         
 
 if __name__ == "__main__":
-    model = ResNet50(num_classes = 751)    
+    model = ResNet50(num_classes=751)    
     imgs = torch.Tensor(32, 3, 256, 128)
-    f = model(imgs)
+    # f = model(imgs)
     embed()
