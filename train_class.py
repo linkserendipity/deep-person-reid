@@ -206,11 +206,52 @@ def main():
     model = models.init_model(name=args.arch, num_classes=dataset.num_train_pids, loss={'softmax'})
     print("Model size: {:.5f}M".format(sum(p.numel() for p in model.parameters())/1000000.0))
 
+    criterion_class = CrossEntropyLabelSmooth(num_classes=751)
+    optimizer = init_optim(args.optim, model.parameters(), args.lr, args.weight_decay)
+    # optimizer = init_optim(args.optim, nn.Sequential([
+    #     model.conv1,
+    #     model.conv2,
+    # ]))
+    if args.stepsize > 0:
+        scheduler = lr_scheduler.StepLR(optimizer, step_size=args.stepsize, gamma=args.gamma)
 
-    # for epoch in range(60):
-        # train()
+    start_epoch = args.start_epoch
 
-def train():
+    if args.resume:
+        print("Loading checkpoint from '{}'".format(args.resume))
+        checkpoint = torch.load(args.resume)
+        model.load_state_dict(checkpoint['state_dict'])
+        start_epoch = checkpoint['epoch']
+
+    # Parallel
+    if use_gpu:
+        model = nn.DataParallel(model).cuda()
+        # model.module.parameters() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+    if args.evaluate:
+        print('Evaluate only!')
+        test(model, queryloader, galleryloader, use_gpu)
+        return 0
+
+    print('start training!')
+
+    for epoch in range(start_epoch, args.max_epoch):
+        train(epoch, model, criterion_class, optimizer, trainloader, use_gpu)
+
+
+def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
+    model.train()
+
+    for batch_idx, (imgs, pids, _) in enumerate(trainloader):
+        if use_gpu:
+            imgs, pids = imgs.cuda(), pids.cuda()
+        outputs = model(imgs)
+        loss = criterion_class(outputs, pids)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        print(batch_idx, loss)
+        break
     return 0
 
 if __name__ == "__main__":
