@@ -199,7 +199,10 @@ def main():
         pin_memory=pin_memory, drop_last=False,
     )
 
-    model =models.init_model(name=args.arch, num_classes = dataset.num_train_pids, loss = 'softmax')
+    # model =models.init_model(name=args.arch, num_classes = dataset.num_train_pids, loss = 'softmax')
+    print("Initializing model: {}".format(args.arch))
+    model = models.init_model(name=args.arch, num_classes=dataset.num_train_pids, loss={'xent'}, use_gpu=use_gpu)
+    print("Model size: {:.5f}M".format(sum(p.numel() for p in model.parameters())/1000000.0))
 
 
     # for epoch in range(60):
