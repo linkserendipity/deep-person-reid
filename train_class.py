@@ -249,6 +249,7 @@ def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
     for batch_idx, (imgs, pids, _) in enumerate(trainloader):
         if use_gpu:
             imgs, pids = imgs.cuda(), pids.cuda()
+
         # measure data loading time
         data_time.update(time.time() - end)
 
@@ -257,11 +258,24 @@ def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+        # measure elapsed time
+        batch_time.update(time.time() - end)
+        end = time.time()
+        losses.update(loss.item(), pids.size(0))
+
+        if (batch_idx+1) % args.print_freq == 0:
+            print('Epoch: [{0}][{1}/{2}]\t'
+                  'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+                  'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
+                  'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
+                   epoch+1, batch_idx+1, len(trainloader), batch_time=batch_time,
+                   data_time=data_time, loss=losses))
         #print(epoch, batch_idx, loss)
-        print(batch_idx, loss)
-        if batch_idx > 100:
-            break
-    return 0
+        # print(batch_idx, loss)
+        # if batch_idx > 100:
+            # break
+
 
 if __name__ == "__main__":
     main()
