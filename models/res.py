@@ -23,7 +23,7 @@ class ResNet50(nn.Module):
 
         if not self.training:
             return f
-        y = classifier(f)
+        y = self.classifier(f) #self.!!!!!!!!!!!!!
         return y
         
 
