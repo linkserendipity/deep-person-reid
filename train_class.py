@@ -209,10 +209,9 @@ def main():
     # for epoch in range(60):
         # train()
 
-def train()
-
+def train():
     return 0
 
-if if __name__ == "__main__":
+if __name__ == "__main__":
     main()
 
