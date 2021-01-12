@@ -35,44 +35,44 @@ parser.add_argument('--height', type=int, default=256,
                     help="height of an image (default: 256)")
 parser.add_argument('--width', type=int, default=128,
                     help="width of an image (default: 128)")
-parser.add_argument('--split-id', type=int, default=0, help="split index")
+parser.add_argument('--split_id', type=int, default=0, help="split index")
 # CUHK03-specific setting
-parser.add_argument('--cuhk03-labeled', action='store_true',
+parser.add_argument('--cuhk03_labeled', action='store_true',
                     help="whether to use labeled images, if false, detected images are used (default: False)")
-parser.add_argument('--cuhk03-classic-split', action='store_true',
+parser.add_argument('--cuhk03_classic-split', action='store_true',
                     help="whether to use classic split by Li et al. CVPR'14 (default: False)")
-parser.add_argument('--use-metric-cuhk03', action='store_true',
+parser.add_argument('--use_metric_cuhk03', action='store_true',
                     help="whether to use cuhk03-metric (default: False)")
 # Optimization options
 parser.add_argument('--optim', type=str, default='adam', help="optimization algorithm (see optimizers.py)")
-parser.add_argument('--max-epoch', default=60, type=int,
+parser.add_argument('--max_epoch', default=60, type=int,
                     help="maximum epochs to run")
-parser.add_argument('--start-epoch', default=0, type=int,
+parser.add_argument('--start_epoch', default=0, type=int,
                     help="manual epoch number (useful on restarts)") # checkpoint
-parser.add_argument('--train-batch', default=32, type=int,
+parser.add_argument('--train_batch', default=32, type=int,
                     help="train batch size") 
-parser.add_argument('--test-batch', default=32, type=int, help="test batch size")
-parser.add_argument('--lr', '--learning-rate', default=0.0003, type=float,
+parser.add_argument('--test_batch', default=32, type=int, help="test batch size")
+parser.add_argument('--lr', '--learning_rate', default=0.0003, type=float,
                     help="initial learning rate")
 parser.add_argument('--stepsize', default=20, type=int,
                     help="stepsize to decay learning rate (>0 means this is enabled)")
 parser.add_argument('--gamma', default=0.1, type=float,
                     help="learning rate decay")
-parser.add_argument('--weight-decay', default=5e-04, type=float,
+parser.add_argument('--weight_decay', default=5e-04, type=float,
                     help="weight decay (default: 5e-04)")
 # Architecture
 parser.add_argument('-a', '--arch', type=str, default='resnet50', choices=models.get_names())
 # Miscs
-parser.add_argument('--print-freq', type=int, default=10, help="print frequency")
+parser.add_argument('--print_freq', type=int, default=10, help="print frequency")
 parser.add_argument('--seed', type=int, default=1, help="manual seed")
 parser.add_argument('--resume', type=str, default='', metavar='PATH')
 parser.add_argument('--evaluate', action='store_true', help="evaluation only") 
-parser.add_argument('--eval-step', type=int, default=-1,
+parser.add_argument('--eval_step', type=int, default=-1,
                     help="run evaluation for every N epochs (set to -1 to test after training)")
-parser.add_argument('--start-eval', type=int, default=0, help="start to evaluate after specific epoch")
-parser.add_argument('--save-dir', type=str, default='log')
-parser.add_argument('--use-cpu', action='store_true', help="use cpu")
-parser.add_argument('--gpu-devices', default='0', type=str, help='gpu device ids for CUDA_VISIBLE_DEVICES')
+parser.add_argument('--start_eval', type=int, default=0, help="start to evaluate after specific epoch")
+parser.add_argument('--save_dir', type=str, default='log')
+parser.add_argument('--use_cpu', action='store_true', help="use cpu")
+parser.add_argument('--gpu_devices', default='0', type=str, help='gpu device ids for CUDA_VISIBLE_DEVICES')
 
 args = parser.parse_args()
 
@@ -233,11 +233,44 @@ def main():
         test(model, queryloader, galleryloader, use_gpu)
         return 0
 
+    start_time = time.time()
+    train_time = 0
+    best_rank1 = -np.inf
+    best_epoch = 0
+
     print('==>start training')
-
     for epoch in range(start_epoch, args.max_epoch):
+        start_train_time = time.time()
         train(epoch, model, criterion_class, optimizer, trainloader, use_gpu)
+        train_time += round(time.time() - start_train_time)
 
+        if args.stepsize > 0: scheduler.step()
+
+        if (epoch + 1) > args.start_eval and args.eval_step > 0 and (epoch + 1) % args.eval_step == 0 or (
+                epoch + 1) == args.max_epoch:
+            print("==> Test")
+            rank1 = test(model, queryloader, galleryloader, use_gpu)
+            is_best = rank1 > best_rank1
+            if is_best:
+                best_rank1 = rank1
+                best_epoch = epoch + 1
+
+            if use_gpu:
+                state_dict = model.module.state_dict()
+            else:
+                state_dict = model.state_dict()
+            save_checkpoint({
+                'state_dict': state_dict,
+                'rank1': rank1,
+                'epoch': epoch,
+            }, is_best, osp.join(args.save_dir, 'checkpoint_ep' + str(epoch + 1) + '.pth.tar'))
+
+    print("==> Best Rank-1 {:.1%}, achieved at epoch {}".format(best_rank1, best_epoch))
+
+    elapsed = round(time.time() - start_time)
+    elapsed = str(datetime.timedelta(seconds=elapsed))
+    train_time = str(datetime.timedelta(seconds=train_time))
+    print("Finished. Total elapsed time (h:m:s): {}. Training time (h:m:s): {}.".format(elapsed, train_time))
 
 def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
     model.train()
@@ -264,7 +297,7 @@ def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
         end = time.time()
         losses.update(loss.item(), pids.size(0))
 
-        if (batch_idx+1) % args.print-freq == 0:
+        if (batch_idx+1) % args.print_freq == 0:
             print('Epoch: [{0}][{1}/{2}]\t'
                   'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                   'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
