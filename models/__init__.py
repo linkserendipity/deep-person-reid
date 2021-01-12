@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from .ResNet import *
-from .ResNeXt import *
+# from .ResNeXt import *
 from .SEResNet import *
 from .DenseNet import *
 from .MuDeep import *
@@ -22,7 +22,7 @@ __factory = {
     'seresnet101': SEResNet101,
     'seresnext50': SEResNeXt50,
     'seresnext101': SEResNeXt101,
-    'resnext101': ResNeXt101_32x4d,
+    # 'resnext101': ResNeXt101_32x4d,
     'resnet50m': ResNet50M,
     'densenet121': DenseNet121,
     'squeezenet': SqueezeNet,
