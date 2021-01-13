@@ -24,18 +24,17 @@ class RandomIdentitySampler(Sampler):
             self.index_dic[pid].append(index)
         self.pids = list(self.index_dic.keys())
         self.num_identities = len(self.pids)
+        from IPython import embed
+        embed()
 
     def __iter__(self):
-        # 3004 pictures list 32 batch_size    [aaaaaaaaaaaaaaaaaa]
-        indices = torch.randperm(self.num_identities)
-        ret = []
-        for i in indices:
-            pid = self.pids[i]
-            t = self.index_dic[pid]
-            replace = False if len(t) >= self.num_instances else True
-            t = np.random.choice(t, size=self.num_instances, replace=replace)
-            ret.extend(t)
-        return iter(ret)
+        raise NotImplementedError
 
     def __len__(self):
-        return self.num_identities * self.num_instances
+        raise NotImplementedError
+
+
+if if __name__ == "__main__":
+    from util.data_manager import Market1501
+    dataset = Market1501(root='/home/ls')
+    sample = RandomIdentitySampler(dataset.train)
