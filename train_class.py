@@ -125,7 +125,7 @@ def test(model, queryloader, galleryloader, use_gpu, ranks=[1, 5, 10, 20]):
     distmat = torch.pow(qf, 2).sum(dim=1, keepdim=True).expand(m, n) + \
               torch.pow(gf, 2).sum(dim=1, keepdim=True).expand(n, m).t()
     # distmat.addmm_(1, -2, qf, gf.t())  # ???!!! warning
-    distmat.addmm_(qf, gf.t(), *, 1, -2)  # addmm_(Tensor mat1, Tensor mat2, *, Number beta, Number alpha)
+    distmat.addmm_(qf, gf.t(), 1, -2)  # addmm_(Tensor mat1, Tensor mat2, *, Number beta, Number alpha)
     distmat = distmat.numpy()
     # distmat.addmm(mat1, mat2, *, beta=1, alpha=-2)
     print("Computing CMC and mAP")
