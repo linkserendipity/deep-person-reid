@@ -34,7 +34,7 @@ class RandomIdentitySampler(Sampler):
         raise NotImplementedError
 
 
-if if __name__ == "__main__":
+if __name__ == "__main__":
     from util.data_manager import Market1501
     dataset = Market1501(root='/home/ls')
     sample = RandomIdentitySampler(dataset.train)
