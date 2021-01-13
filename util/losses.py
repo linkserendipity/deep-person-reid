@@ -87,7 +87,7 @@ class TripletLoss(nn.Module):
         # (a-b)^2 =a^2-2ab+b^2
         # ([1,2,3]*[1,2,3]).sum()=[1,4,9].sum()=14  np.array([1,4,9]).sum(dim=1)
         # Compute pairwise distance, replace by the official when merged
-        dist = torch.pow(inputs, 2).sum(dim=1, keepdim=True).expand(n, n) # inputs.^2 sumup then expand to 32*32
+        dist = torch.pow(inputs, 2).sum(dim=1, keepdim=True).expand(n, n)  # inputs.^2 sumup then expand to 32*32
         dist = dist + dist.t()
         dist.addmm_(1, -2, inputs, inputs.t())
         dist = dist.clamp(min=1e-12).sqrt()  # for numerical stability
@@ -165,11 +165,11 @@ class RingLoss(nn.Module):
         l = ((x.norm(p=2, dim=1) - self.radius)**2).mean()
         return l * self.weight_ring
 
+
 if __name__ == '__main__':
     target = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8]
     target = torch.Tensor(target)
     features = torch.Tensor(32, 2048)
     a = TripletLoss()
     a.forward(features, target)
-
     
