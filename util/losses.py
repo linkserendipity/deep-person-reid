@@ -70,16 +70,24 @@ class TripletLoss(nn.Module):
         super(TripletLoss, self).__init__()
         self.margin = margin
         self.ranking_loss = nn.MarginRankingLoss(margin=margin)
+        # ap an margin y
+        # Relu(ap - y*an + margin)
+        # ap: n*1 distance between positive sample pairs
+        # an distance between negative sample pairs
 
     def forward(self, inputs, targets):
         """
         Args:
-            inputs: feature matrix with shape (batch_size, feat_dim)
+            inputs: feature matrix with shape (batch_size, feat_dim) 32*2048
             targets: ground truth labels with shape (num_classes)
         """
         n = inputs.size(0)
+        # https://blog.csdn.net/jdzwanghao/article/details/97371299
+
+        # (a-b)^2 =a^2-2ab+b^2
+        # ([1,2,3]*[1,2,3]).sum()=[1,4,9].sum()=14  np.array([1,4,9]).sum(dim=1)
         # Compute pairwise distance, replace by the official when merged
-        dist = torch.pow(inputs, 2).sum(dim=1, keepdim=True).expand(n, n)
+        dist = torch.pow(inputs, 2).sum(dim=1, keepdim=True).expand(n, n) # inputs.^2 sumup then expand to 32*32
         dist = dist + dist.t()
         dist.addmm_(1, -2, inputs, inputs.t())
         dist = dist.clamp(min=1e-12).sqrt()  # for numerical stability
@@ -145,7 +153,6 @@ class CenterLoss(nn.Module):
 
 class RingLoss(nn.Module):
     """Ring loss.
-    
     Reference:
     Zheng et al. Ring loss: Convex Feature Normalization for Face Recognition. CVPR 2018.
     """
@@ -159,4 +166,10 @@ class RingLoss(nn.Module):
         return l * self.weight_ring
 
 if __name__ == '__main__':
-    pass
+    target = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8]
+    target = torch.Tensor(target)
+    features = torch.Tensor(32, 2048)
+    a = TripletLoss()
+    a.forward(features, target)
+
+    
