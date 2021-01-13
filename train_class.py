@@ -65,7 +65,7 @@ parser.add_argument('-a', '--arch', type=str, default='resnet50', choices=models
 # Miscs
 parser.add_argument('--print_freq', type=int, default=10, help="print frequency")
 parser.add_argument('--seed', type=int, default=1, help="manual seed")
-parser.add_argument('--resume', type=str, default='', metavar='PATH') # resume = /log/checkpoint_ep60.pth.tar ????
+parser.add_argument('--resume', type=str, default='', metavar='PATH')  # resume = /log/checkpoint_ep60.pth.tar ????
 parser.add_argument('--evaluate', action='store_true', help="evaluation only") 
 parser.add_argument('--eval_step', type=int, default=-1,
                     help="run evaluation for every N epochs (set to -1 to test after training)")
