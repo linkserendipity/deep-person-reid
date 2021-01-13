@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from torch.utils.data.sampler import Sampler
 
-class RandomIdentitySampler(Sampler):
+class RandomIdentitySampler1(Sampler):
     """ 
     Randomly sample N identities, then for each identity,
     randomly sample K instances, therefore batch size is N*K.
@@ -37,4 +37,4 @@ class RandomIdentitySampler(Sampler):
 if __name__ == "__main__":
     from util.data_manager import Market1501
     dataset = Market1501(root='/home/ls')
-    sample = RandomIdentitySampler(dataset.train)
+    sample = RandomIdentitySampler1(dataset.train)
