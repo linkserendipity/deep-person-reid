@@ -38,8 +38,15 @@ class AverageMeter(object):
 def save_checkpoint(state, is_best, fpath='checkpoint.pth.tar'):
     mkdir_if_missing(osp.dirname(fpath))
     torch.save(state, fpath)
+            #state = {
+            #     'state_dict': state_dict,
+            #     'rank1': rank1,
+            #     'epoch': epoch,
+            # }
     if is_best:
         shutil.copy(fpath, osp.join(osp.dirname(fpath), 'best_model.pth.tar'))
+    # copy checkpoint_(epoch+1).pth.tar and rename to best_model.pth.tar
+    # how to unzip .tar??
 
 class Logger(object):
     """
