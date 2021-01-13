@@ -150,7 +150,8 @@ def main():
         pin_memory = False
     
     if not args.evaluate:
-        sys.stdout = Logger(osp.join(args.save_dir, 'log_train.txt'))
+        # sys.stdout = Logger(osp.join(args.save_dir, 'log_train.txt'))
+        sys.stdout = Logger(osp.join(args.save_dir, "log_train_{}.txt".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))))
     else:
         sys.stdout = Logger(osp.join(args.save_dir, 'log_test.txt'))
     print("==========\nArgs:{}\n==========".format(args))
@@ -297,6 +298,7 @@ def train(epoch, model, criterion_class, optimizer, trainloader, use_gpu):
         end = time.time()
         losses.update(loss.item(), pids.size(0))
 
+        # print each Epoch
         if (batch_idx+1) % args.print_freq == 0:
             print('Epoch: [{0}][{1}/{2}]\t'
                   'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
