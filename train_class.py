@@ -150,10 +150,11 @@ def main():
         pin_memory = False
     
     if not args.evaluate:
-        # sys.stdout = Logger(osp.join(args.save_dir, 'log_train.txt'))
-        sys.stdout = Logger(osp.join(args.save_dir, "log_train_{}.txt".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))))
+        # sys.stdout = Logger(osp.join(args.save_dir, 'log_train.txt')) avoid overlay txt file
+        sys.stdout = Logger(osp.join(args.save_dir, "log_train_{}.txt".format(time.strftime("%Y-%m-%d %H-%M", time.localtime()))))
     else:
-        sys.stdout = Logger(osp.join(args.save_dir, 'log_test.txt'))
+        # sys.stdout = Logger(osp.join(args.save_dir, 'log_test_{}.txt'))
+        sys.stdout = Logger(osp.join(args.save_dir, "log_test_{}.txt".format(time.strftime("%Y-%m-%d %H-%M", time.localtime()))))
     print("==========\nArgs:{}\n==========".format(args))
 
     if use_gpu:
