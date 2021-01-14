@@ -120,7 +120,7 @@ class TripletLoss(nn.Module):
         # Compute pairwise distance, replace by the official when merged
         dist = torch.pow(inputs, 2).sum(dim=1, keepdim=True).expand(n, n)
         dist = dist + dist.t()
-        dist.addmm_(1, -2, inputs, inputs.t())
+        dist = torch.addmm(dist, inputs, inputs.t(), 1, -2)
         dist = dist.clamp(min=1e-12).sqrt()  # for numerical stability
         # For each anchor, find the hardest positive and negative
         mask = targets.expand(n, n).eq(targets.expand(n, n).t())
