@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader
 from torch.optim import lr_scheduler
 
 import models
-from util.losses import CrossEntropyLabelSmooth, TripletLoss
+from util.losses import CrossEntropyLabelSmooth
 from util import data_manager
 from util import transforms as T
 from util.dataset_loader import ImageDataset

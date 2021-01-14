@@ -172,4 +172,4 @@ if __name__ == '__main__':
     features = torch.Tensor(32, 2048)
     a = TripletLoss()
     print(a.forward(features, target))
-    
+    # tensor(nan) ?????? why is this case ? why is this situation?
