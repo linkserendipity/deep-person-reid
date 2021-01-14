@@ -82,7 +82,6 @@ class TripletLoss(nn.Module):
             targets: ground truth labels with shape (num_classes)
         """
         n = inputs.size(0)
-        # https://blog.csdn.net/jdzwanghao/article/details/97371299
 
         # (a-b)^2 =a^2-2ab+b^2
         # ([1,2,3]*[1,2,3]).sum()=[1,4,9].sum()=14  np.array([1,4,9]).sum(dim=1)
@@ -95,17 +94,19 @@ class TripletLoss(nn.Module):
         mask = targets.expand(n, n).eq(targets.expand(n, n).t())
         dist_ap, dist_an = [], []
         for i in range(n):
-            dist_ap.append(dist[i][mask[i]].max().unsqueeze(0))
-            dist_an.append(dist[i][mask[i] == 0].min().unsqueeze(0))
+            # dist_ap.append(dist[i][mask[i]].max().unsqueeze(0))
+            # dist_an.append(dist[i][mask[i] == 0].min().unsqueeze(0))
+            dist_ap.append(dist[i][mask[i]].max())
+            dist_an.append(dist[i][mask[i] == 0].min())
         from IPython import embed
         embed()
 
-        dist_ap = torch.cat(dist_ap)
-        dist_an = torch.cat(dist_an)
-        # Compute ranking hinge loss
-        y = torch.ones_like(dist_an)
-        loss = self.ranking_loss(dist_an, dist_ap, y)
-        return loss
+        # dist_ap = torch.cat(dist_ap)
+        # dist_an = torch.cat(dist_an)
+        # # Compute ranking hinge loss
+        # y = torch.ones_like(dist_an)
+        # loss = self.ranking_loss(dist_an, dist_ap, y)
+        # return loss
 
 class CenterLoss(nn.Module):
     """Center loss.
