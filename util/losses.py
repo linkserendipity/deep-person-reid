@@ -94,19 +94,15 @@ class TripletLoss(nn.Module):
         mask = targets.expand(n, n).eq(targets.expand(n, n).t())
         dist_ap, dist_an = [], []
         for i in range(n):
-            # dist_ap.append(dist[i][mask[i]].max().unsqueeze(0))
-            # dist_an.append(dist[i][mask[i] == 0].min().unsqueeze(0))
-            dist_ap.append(dist[i][mask[i]].max())
-            dist_an.append(dist[i][mask[i] == 0].min())
-        from IPython import embed
-        embed()
+            dist_ap.append(dist[i][mask[i]].max().unsqueeze(0))
+            dist_an.append(dist[i][mask[i] == 0].min().unsqueeze(0))
 
-        # dist_ap = torch.cat(dist_ap)
-        # dist_an = torch.cat(dist_an)
-        # # Compute ranking hinge loss
-        # y = torch.ones_like(dist_an)
-        # loss = self.ranking_loss(dist_an, dist_ap, y)
-        # return loss
+        dist_ap = torch.cat(dist_ap)
+        dist_an = torch.cat(dist_an)
+        # Compute ranking hinge loss
+        y = torch.ones_like(dist_an)
+        loss = self.ranking_loss(dist_an, dist_ap, y)
+        return loss
 
 class CenterLoss(nn.Module):
     """Center loss.
@@ -175,5 +171,5 @@ if __name__ == '__main__':
     target = torch.Tensor(target)
     features = torch.Tensor(32, 2048)
     a = TripletLoss()
-    a.forward(features, target)
+    print(a.forward(features, target))
     
