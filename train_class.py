@@ -149,6 +149,7 @@ def test(model, queryloader, galleryloader, use_gpu, ranks=[1, 5, 10, 20]):
     return cmc[0]
 
 def main():
+    print(time.strftime("Current time is %Y-%m-%d %H:%M:%S\n", time.localtime())) 
     torch.manual_seed(args.seed)
     use_gpu = torch.cuda.is_available()
     if args.use_cpu: 
