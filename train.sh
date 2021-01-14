@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=0,1,2,3 nohup python train_class.py --train_batch=256  --max_epoch=120 &
+CUDA_VISIBLE_DEVICES=3 nohup python train_class.py --train_batch=64  --max_epoch=60 &
